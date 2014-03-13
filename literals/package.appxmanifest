@@ -40,7 +40,7 @@
               <FileType>.diff</FileType>
               <FileType>.xml</FileType>
               <FileType>.json</FileType>
-              <FileType>.yaml</FileType>
+              <FileType>.yml</FileType>
               <FileType>.x86</FileType>
               <FileType>.h</FileType>
               <FileType>.c</FileType>
