@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="442666080FC00.Literals" Version="1.1.0.0" Publisher="CN=2383AF17-10A3-447D-B221-23DE7A5711FE" />
+  <Properties>
+    <DisplayName>Literals</DisplayName>
+    <PublisherDisplayName>Webnium Inc.</PublisherDisplayName>
+    <Logo>images\storelogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-US" />
+    <Resource Language="ja-JP" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <m2:VisualElements DisplayName="Literals" Description="literals" ForegroundText="light" BackgroundColor="#464646" Square150x150Logo="images\Logo.png" Square30x30Logo="images\SmallLogo.png">
+        <m2:SplashScreen Image="images\splashscreen.png" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="portrait" />
+          <m2:Rotation Preference="landscape" />
+          <m2:Rotation Preference="portraitFlipped" />
+          <m2:Rotation Preference="landscapeFlipped" />
+        </m2:InitialRotationPreference>
+        <m2:ApplicationView MinWidth="default" />
+      </m2:VisualElements>
+      <Extensions>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="literals">
+            <DisplayName>Literals</DisplayName>
+            <InfoTip>Edit with Literals</InfoTip>
+            <SupportedFileTypes>
+              <FileType>.txt</FileType>
+              <FileType>.rst</FileType>
+              <FileType>.md</FileType>
+              <FileType>.rdoc</FileType>
+              <FileType>.tex</FileType>
+              <FileType>.diff</FileType>
+              <FileType>.xml</FileType>
+              <FileType>.json</FileType>
+              <FileType>.yaml</FileType>
+              <FileType>.x86</FileType>
+              <FileType>.h</FileType>
+              <FileType>.c</FileType>
+              <FileType>.cs</FileType>
+              <FileType>.cpp</FileType>
+              <FileType>.d</FileType>
+              <FileType>.r</FileType>
+              <FileType>.rb</FileType>
+              <FileType>.pl</FileType>
+              <FileType>.py</FileType>
+              <FileType>.php</FileType>
+              <FileType>.sh</FileType>
+              <FileType>.vb</FileType>
+              <FileType>.sql</FileType>
+              <FileType>.cfm</FileType>
+              <FileType>.svg</FileType>
+              <FileType>.scala</FileType>
+              <FileType>.lisp</FileType>
+              <FileType>.lua</FileType>
+              <FileType>.cbl</FileType>
+              <FileType>.pco</FileType>
+              <FileType>.rs</FileType>
+              <FileType>.rc</FileType>
+              <FileType>.java</FileType>
+              <FileType>.jsp</FileType>
+              <FileType>.go</FileType>
+              <FileType>.erl</FileType>
+              <FileType>.hs</FileType>
+              <FileType>.hx</FileType>
+              <FileType>.html</FileType>
+              <FileType>.htm</FileType>
+              <FileType>.css</FileType>
+              <FileType>.js</FileType>
+              <FileType>.ts</FileType>
+              <FileType>.jsx</FileType>
+              <FileType>.dart</FileType>
+              <FileType>.coffee</FileType>
+              <FileType>.less</FileType>
+              <FileType>.htaccess</FileType>
+              <FileType>.ini</FileType>
+              <FileType>.cgi</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.shareTarget">
+          <ShareTarget>
+            <SupportedFileTypes>
+              <SupportsAnyFileType />
+            </SupportedFileTypes>
+            <DataFormat>Text</DataFormat>
+            <DataFormat>HTML</DataFormat>
+          </ShareTarget>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+</Package>
