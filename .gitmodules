@@ -2,3 +2,6 @@
 	path = literals/lib/flagrate
 	url = git@github.com:webnium/flagrate.git
 	branch = gh-pages
+[submodule "literals/lib/ace"]
+	path = literals/lib/ace
+	url = git@github.com:ajaxorg/ace-builds.git
