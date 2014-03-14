@@ -15,9 +15,16 @@
     <Resource Language="ja-JP" />
   </Resources>
   <Applications>
-    <Application Id="App" StartPage="default.html">
-      <m2:VisualElements DisplayName="Literals" Description="literals" ForegroundText="light" BackgroundColor="#464646" Square150x150Logo="images\Logo.png" Square30x30Logo="images\SmallLogo.png">
-        <m2:SplashScreen Image="images\splashscreen.png" />
+    <Application Id="App" StartPage="editor.html">
+      <m2:VisualElements DisplayName="Literals" Description="literals" ForegroundText="light" BackgroundColor="#2b344e" Square150x150Logo="images\square150x150logo.png" Square30x30Logo="images\smalllogo.png">
+        <m2:DefaultTile ShortName="Literals" DefaultSize="square150x150Logo" Square310x310Logo="images\square310x310logo.png" Wide310x150Logo="images\wide310x150logo.png" Square70x70Logo="images\square70x70logo.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+            <m2:ShowOn Tile="wide310x150Logo" />
+            <m2:ShowOn Tile="square310x310Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:SplashScreen Image="images\splashscreen.png" BackgroundColor="#2b344e" />
         <m2:InitialRotationPreference>
           <m2:Rotation Preference="portrait" />
           <m2:Rotation Preference="landscape" />
@@ -27,64 +34,6 @@
         <m2:ApplicationView MinWidth="default" />
       </m2:VisualElements>
       <Extensions>
-        <Extension Category="windows.fileTypeAssociation">
-          <FileTypeAssociation Name="literals">
-            <DisplayName>Literals</DisplayName>
-            <InfoTip>Edit with Literals</InfoTip>
-            <SupportedFileTypes>
-              <FileType>.txt</FileType>
-              <FileType>.rst</FileType>
-              <FileType>.md</FileType>
-              <FileType>.rdoc</FileType>
-              <FileType>.tex</FileType>
-              <FileType>.diff</FileType>
-              <FileType>.xml</FileType>
-              <FileType>.json</FileType>
-              <FileType>.yml</FileType>
-              <FileType>.x86</FileType>
-              <FileType>.h</FileType>
-              <FileType>.c</FileType>
-              <FileType>.cs</FileType>
-              <FileType>.cpp</FileType>
-              <FileType>.d</FileType>
-              <FileType>.r</FileType>
-              <FileType>.rb</FileType>
-              <FileType>.pl</FileType>
-              <FileType>.py</FileType>
-              <FileType>.php</FileType>
-              <FileType>.sh</FileType>
-              <FileType>.vb</FileType>
-              <FileType>.sql</FileType>
-              <FileType>.cfm</FileType>
-              <FileType>.svg</FileType>
-              <FileType>.scala</FileType>
-              <FileType>.lisp</FileType>
-              <FileType>.lua</FileType>
-              <FileType>.cbl</FileType>
-              <FileType>.pco</FileType>
-              <FileType>.rs</FileType>
-              <FileType>.rc</FileType>
-              <FileType>.java</FileType>
-              <FileType>.jsp</FileType>
-              <FileType>.go</FileType>
-              <FileType>.erl</FileType>
-              <FileType>.hs</FileType>
-              <FileType>.hx</FileType>
-              <FileType>.html</FileType>
-              <FileType>.htm</FileType>
-              <FileType>.css</FileType>
-              <FileType>.js</FileType>
-              <FileType>.ts</FileType>
-              <FileType>.jsx</FileType>
-              <FileType>.dart</FileType>
-              <FileType>.coffee</FileType>
-              <FileType>.less</FileType>
-              <FileType>.htaccess</FileType>
-              <FileType>.ini</FileType>
-              <FileType>.cgi</FileType>
-            </SupportedFileTypes>
-          </FileTypeAssociation>
-        </Extension>
         <Extension Category="windows.shareTarget">
           <ShareTarget>
             <SupportedFileTypes>
@@ -93,6 +42,201 @@
             <DataFormat>Text</DataFormat>
             <DataFormat>HTML</DataFormat>
           </ShareTarget>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-text">
+            <DisplayName>General Text File</DisplayName>
+            <Logo>images\ext-general.png</Logo>
+            <SupportedFileTypes>
+              <FileType>.sql</FileType>
+              <FileType>.cfm</FileType>
+              <FileType>.ini</FileType>
+              <FileType>.pem</FileType>
+              <FileType>.key</FileType>
+              <FileType>.htaccess</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-markup-document">
+            <DisplayName>General Markup Document</DisplayName>
+            <Logo>images\ext-general.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/xml">.xml</FileType>
+              <FileType ContentType="text/html">.html</FileType>
+              <FileType ContentType="text/html">.htm</FileType>
+              <FileType ContentType="text/x-rst">.rst</FileType>
+              <FileType ContentType="image/svg+xml">.svg</FileType>
+              <FileType ContentType="application/x-tex">.tex</FileType>
+              <FileType ContentType="application/x-latex">.ltx</FileType>
+              <FileType ContentType="application/x-latex">.latex</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-data-file">
+            <DisplayName>General Data File</DisplayName>
+            <Logo>images\ext-general.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/csv">.csv</FileType>
+              <FileType ContentType="text/x-diff">.diff</FileType>
+              <FileType ContentType="application/json">.json</FileType>
+              <FileType ContentType="application/x-yaml">.yml</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-style-sheet">
+            <DisplayName>General Style Sheet</DisplayName>
+            <Logo>images\ext-general.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/css">.css</FileType>
+              <FileType ContentType="text/x-less">.less</FileType>
+              <FileType ContentType="text/x-scss">.scss</FileType>
+              <FileType ContentType="text/x-sass">.sass</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-script">
+            <DisplayName>General Script</DisplayName>
+            <Logo>images\ext-general.png</Logo>
+            <SupportedFileTypes>
+              <FileType>.x86</FileType>
+              <FileType>.h</FileType>
+              <FileType>.c</FileType>
+              <FileType>.cs</FileType>
+              <FileType>.cpp</FileType>
+              <FileType>.d</FileType>
+              <FileType>.r</FileType>
+              <FileType>.scala</FileType>
+              <FileType>.java</FileType>
+              <FileType>.jsp</FileType>
+              <FileType>.erl</FileType>
+              <FileType>.cbl</FileType>
+              <FileType>.pco</FileType>
+              <FileType ContentType="application/x-perl">.pl</FileType>
+              <FileType ContentType="application/x-sh">.sh</FileType>
+              <FileType>.vb</FileType>
+              <FileType ContentType="application/x-lisp">.lsp</FileType>
+              <FileType ContentType="text/x-lua">.lua</FileType>
+              <FileType ContentType="text/x-haskell">.hs</FileType>
+              <FileType ContentType="text/x-cgi">.cgi</FileType>
+              <FileType ContentType="text/x-dart">.dart</FileType>
+              <FileType ContentType="text/x-rust">.rs</FileType>
+              <FileType ContentType="text/x-rust">.rc</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="markdown">
+            <DisplayName>Markdown Markup Document</DisplayName>
+            <Logo>images\ext-markdown.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-markdown">.md</FileType>
+              <FileType ContentType="text/x-markdown">.markdown</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="text">
+            <DisplayName>Text File</DisplayName>
+            <Logo>images\ext-text.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/plain">.txt</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="rdoc">
+            <DisplayName>Rdoc Markup Document</DisplayName>
+            <Logo>images\ext-rdoc.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/plain">.rdoc</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="javascript">
+            <DisplayName>JavaScript Script</DisplayName>
+            <Logo>images\ext-javascript.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/javascript">.js</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="typescript">
+            <DisplayName>TypeScript Script</DisplayName>
+            <Logo>images\ext-typescript.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-typescript">.ts</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="haxe">
+            <DisplayName>Haxe Script</DisplayName>
+            <Logo>images\ext-haxe.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-haxe">.hx</FileType>
+              <FileType ContentType="text/x-haxe">.hxml</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="jsx">
+            <DisplayName>JSX Script</DisplayName>
+            <Logo>images\ext-jsx.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-jsx">.jsx</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="go">
+            <DisplayName>Go Script</DisplayName>
+            <Logo>images\ext-go.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-go">.go</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="python">
+            <DisplayName>Python Script</DisplayName>
+            <Logo>images\ext-python.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-python">.py</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="ruby">
+            <DisplayName>Ruby Script</DisplayName>
+            <Logo>images\ext-ruby.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-ruby">.rb</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="php">
+            <DisplayName>PHP Script</DisplayName>
+            <Logo>images\ext-php.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-php">.php</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="coffee">
+            <DisplayName>CoffeeScript Script</DisplayName>
+            <Logo>images\ext-coffee.png</Logo>
+            <SupportedFileTypes>
+              <FileType ContentType="text/x-coffeescript">.coffee</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
         </Extension>
       </Extensions>
     </Application>
