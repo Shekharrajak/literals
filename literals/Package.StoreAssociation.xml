@@ -354,6 +354,10 @@
       <ReservedName>Literals</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
-  <AccountPackageIdentityNames />
+  <AccountPackageIdentityNames>
+    <MainPackageIdentityName>442666080FC00.Gyazo24forWindows8</MainPackageIdentityName>
+    <MainPackageIdentityName>442666080FC00.GyazoTwitforWindows8</MainPackageIdentityName>
+    <MainPackageIdentityName>442666080FC00.YabumiUploader</MainPackageIdentityName>
+  </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/975e20ff-f4de-42c7-b7f5-6f4b93c16462" />
 </StoreAssociation>
