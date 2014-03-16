@@ -5,8 +5,51 @@
   var literals = {
     view: {},
     stat: {},
-    f: {}
+    f: {},
+    config: {}
   };
+
+  //
+  // default configs
+  //
+
+  // global config
+  literals.config.global = {
+    useTabChar: false,
+    tabSize: 4,
+    spaceUnits: 2,
+    closeBrackets: false,
+    showLineNumbers: true,
+    styleActiveLine: true,
+    wordWrap: true
+  };
+
+  // .txt config
+  literals.config.txt = flagrate.extendObject({}, literals.config.global);
+  literals.config.txt.aceMode = 'plain_text';
+  literals.config.txt.useTabChar = true;
+  literals.config.txt.styleActiveLine = false;
+
+  // .html config
+  literals.config.html = flagrate.extendObject({}, literals.config.global);
+  literals.config.htm = literals.config.html;// .htm alias
+  literals.config.html.aceMode = 'html';
+
+  // .css config
+  literals.config.css = flagrate.extendObject({}, literals.config.global);
+  literals.config.css.aceMode = 'css';
+
+  // .less config
+  literals.config.less = flagrate.extendObject({}, literals.config.global);
+  literals.config.less.aceMode = 'less';
+
+  // .js config
+  literals.config.js = flagrate.extendObject({}, literals.config.global);
+  literals.config.js.aceMode = 'javascript';
+
+  // .ts config
+  literals.config.ts = flagrate.extendObject({}, literals.config.global);
+  literals.config.ts.aceMode = 'typescript';
 
   var app = WinJS.Application;
   var activation = Windows.ApplicationModel.Activation;
@@ -33,7 +76,7 @@
       value: 'hoge'
     });
 
-    literals.view.statusBar.insertText('status bar');
+    literals.view.statusBar.insert('<ul><li>test</li><li>test</li><li>test</li></ul>');
   };
 
   app.onactivated = function (a) {
