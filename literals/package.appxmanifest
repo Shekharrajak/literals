@@ -133,6 +133,7 @@
               <FileType ContentType="text/x-dart">.dart</FileType>
               <FileType ContentType="text/x-rust">.rs</FileType>
               <FileType ContentType="text/x-rust">.rc</FileType>
+              <FileType ContentType="application/x-actionscript">.as</FileType>
             </SupportedFileTypes>
           </FileTypeAssociation>
         </Extension>
