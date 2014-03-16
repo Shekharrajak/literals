@@ -86,11 +86,19 @@
           </FileTypeAssociation>
         </Extension>
         <Extension Category="windows.fileTypeAssociation">
-          <FileTypeAssociation Name="general-style-sheet">
-            <DisplayName>General Style Sheet</DisplayName>
-            <Logo>images\ext-general.png</Logo>
+          <FileTypeAssociation Name="css">
+            <DisplayName>CSS Style Sheet</DisplayName>
+            <Logo>images\ext-css.png</Logo>
             <SupportedFileTypes>
               <FileType ContentType="text/css">.css</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="general-style-sheet">
+            <DisplayName>General Style Sheet</DisplayName>
+            <Logo>images\ext-general-style-sheet.png</Logo>
+            <SupportedFileTypes>
               <FileType ContentType="text/x-less">.less</FileType>
               <FileType ContentType="text/x-scss">.scss</FileType>
               <FileType ContentType="text/x-sass">.sass</FileType>
