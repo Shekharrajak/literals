@@ -1,4 +1,5 @@
 ﻿{
-  "preview": "Preview",
-  "done": "Done"
+  "PREVIEW": "Preview",
+  "DONE": "Done",
+  "UNTITLED": "Untitled"
 }

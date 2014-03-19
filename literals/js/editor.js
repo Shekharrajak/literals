@@ -7,7 +7,12 @@
   var AccessList = Windows.Storage.AccessCache.StorageApplicationPermissions.futureAccessList;
   var FileIO = Windows.Storage.FileIO;
 
-  var literals = {
+  var ResourcesGetString = WinJS.Resources.getString;
+  var _L = function (string) {
+    return ResourcesGetString(string).value;
+  };
+
+  var literals = window.app = {
     view: {},
     stat: {},
     f: {},
@@ -28,7 +33,12 @@
     closeBrackets: false,
     showLineNumbers: true,
     styleActiveLine: true,
-    wordWrap: true
+    showInvisibles: true,
+    wordWrap: true,
+    fontSize: 12,
+    lineHeight: 1.25,
+    keyBinding: null,
+    theme: 'tomorrow'
   };
 
   // .txt config
@@ -36,7 +46,11 @@
   literals.config.txt.mode = 'plain_text';
   literals.config.txt.useTabChar = true;
   literals.config.txt.styleActiveLine = false;
+  literals.config.txt.showInvisibles = false;
 
+  // .md config
+  literals.config.md = flagrate.extendObject({}, literals.config.global);
+  literals.config.md.mode = 'markdown';
 
   // .xml config
   literals.config.xml = flagrate.extendObject({}, literals.config.global);
@@ -102,59 +116,101 @@
 
   // init
   literals.f.init = function () {
+    if (literals.stat.init) {
+      return;
+    }
+    literals.stat.init = true;
+
     literals.view.body = document.getElementById('body');
 
-    // editor set
-    literals.view.editorSet = flagrate.createElement('div', { 'class': 'editor-set' });
-    literals.view.editorSet.insertTo(literals.view.body);
+    // tab
+    literals.view.tab = flagrate.createTab({ className: 'tab', bodyless: true });
+    literals.view.tab.insertTo(literals.view.body);
 
     // editor container
     literals.view.editorContainer = flagrate.createElement('div', { 'class': 'editor-container' });
-    literals.view.editorContainer.insertTo(literals.view.editorSet);
+    literals.view.editorContainer.insertTo(literals.view.body);
 
     // editor status bar
     literals.view.statusBar = flagrate.createElement('div', { 'class': 'editor-status-bar' });
-    literals.view.statusBar.insertTo(literals.view.editorSet);
+    literals.view.statusBar.insertTo(literals.view.body);
 
     // TODO:
     literals.view.statusBar.insert('<ul><li>test</li><li>test</li><li>test</li></ul>');
   };
 
   // create session
-  literals.f.createSession = function () {
+  literals.f.createSession = function (opt) {
     var session = {
+      id: Date.now().toString(),
       name: null,
       type: 'txt',
       content: '',
       file: {}
     };
 
+    if (opt) {
+      flagrate.extendObject(session, opt);
+    }
+
+    if (session.name === null) {
+      session.name = _L('UNTITLED') + '.' + session.type;
+    }
+
+    if (literals.config[session.type]) {
+      session.config = literals.config[session.type];
+    } else {
+      session.config = literals.config.global;
+    }
+
+    if (session.config.mode === 'plain_text') {
+      session.mode = 'text';
+    } else {
+      session.mode = 'code';
+    }
+
     literals.sessions.push(session);
+
+    literals.view.tab.push({
+      key: session.id,
+      label: session.name,
+      onSelect: function (e, tab) {
+        if (literals.stat.session.id !== tab.key) {
+          literals.f.selectSession(session);
+        }
+      }
+    });
 
     return session;
   };
 
   // create session by file
   literals.f.createSessionByFile = function (file) {
-    // TODO: check if a file is already open.
+    // check if a file is already open.
+    var i, l;
+    for (i = 0, l = literals.sessions.length; i < l; i++) {
+      if (file.path === literals.sessions[i].file.path) {
+        return;
+      }
+    }
 
-    var session = {
+    var session = literals.f.createSession({
       name: file.name,
-      type: file.fileType.toLowerCase(),
+      type: file.fileType.toLowerCase().replace(/^\./, ''),
       content: null,
       file: {
         path: file.path,
         token: AccessList.add(file)
       }
-    };
-
-    literals.sessions.push(session);
+    });
 
     return session;
   };
 
   // select session
   literals.f.selectSession = function (session) {
+    literals.f.deinitSession();
+
     literals.stat.session = session;
 
     if (session.content === null && typeof session.file.token === 'string') {
@@ -168,20 +224,54 @@
       literals.f.initSession();
     }
 
+    literals.view.tab.select(session.id);
+
     return session;
   };
 
   // init session
   literals.f.initSession = function () {
+    var session = literals.stat.session;
+
+    // create editor
+    if (session.mode === 'text') {
+      literals.view.editor = CodeMirror(literals.view.editorContainer);
+    }
+    if (session.mode === 'code') {
+      var aceElement = flagrate.createElement().insertTo(literals.view.editorContainer);
+      literals.view.editor = ace.edit(aceElement);
+    }
+
+    // config
+    if (session.config.theme) {
+      if (session.mode === 'code') {
+        literals.view.editor.setTheme('ace/theme/' + session.config.theme);
+      }
+    }
+    if (session.config.mode) {
+      if (session.mode === 'code') {
+        literals.view.editor.getSession().setMode('ace/mode/' + session.config.mode);
+      }
+    }
+
+    // set value (content)
+    literals.view.editor.setValue(session.content);
+  };
+
+  // deinit session
+  literals.f.deinitSession = function () {
+    if (!literals.stat.session) {
+      return;
+    }
+
+    // save content
+    literals.stat.session.content = literals.view.editor.getValue();
+
+    // TODO: save other state
+
     // clear editor
     literals.view.editor = null;
     literals.view.editorContainer.update();
-
-    // create editor
-    literals.view.editor = CodeMirror(literals.view.editorContainer, {
-      lineNumbers: true,
-      value: literals.stat.session.content
-    });
   };
 
   //
@@ -190,9 +280,9 @@
 
   // activated
   app.onactivated = function (e) {
-    if (e.detail.kind === Activation.ActivationKind.launch) {
-      literals.f.init();
+    literals.f.init();
 
+    if (e.detail.kind === Activation.ActivationKind.launch) {
       if (e.detail.previousExecutionState !== Activation.ApplicationExecutionState.terminated) {
         // TODO: newly started.
       } else {
