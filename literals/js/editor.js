@@ -12,6 +12,8 @@
     return ResourcesGetString(string).value;
   };
 
+  ace.Range = ace.require('ace/range').Range;
+
   var literals = window.app = {
     view: {},
     stat: {},
@@ -149,6 +151,13 @@
       name: null,
       type: 'txt',
       content: '',
+      modified: false,
+      cursors: [0, 0],// row, col
+      range: {
+        starts: [0, 0],// row, col
+        ends: [0, 0]// row, col
+      },
+      scrolls: [0, 0],// x, y
       file: {}
     };
 
@@ -236,8 +245,10 @@
   literals.f.initSession = function () {
     var session = literals.stat.session;
     var config = session.config;
+    
+    var aceEditSession, aceSelection;
 
-    // create editor
+    // create editor and set value
     if (session.mode === 'text') {
       literals.view.editor = CodeMirror(literals.view.editorContainer, {
         value: session.content
@@ -248,6 +259,9 @@
         .insertText(session.content)
         .insertTo(literals.view.editorContainer);
       literals.view.editor = ace.edit(aceElement);
+
+      aceEditSession = literals.view.editor.getSession();
+      aceSelection = literals.view.editor.getSelection();
     }
 
     // config
@@ -258,8 +272,6 @@
       literals.view.editor.setOption('lineNumbers', config.showLineNumbers);
     }
     if (session.mode === 'code') {
-      var aceEditSession = literals.view.editor.getSession();
-
       if (config.theme) {
         literals.view.editor.setTheme('ace/theme/' + config.theme);
       }
@@ -282,8 +294,49 @@
       literals.view.editor.setBehavioursEnabled(config.closeBrackets);
     }
 
-    // set value (content)
-    //literals.view.editor.setValue();
+    // status
+    if (session.mode === 'text') {
+      // cursor
+      literals.view.editor.setCursor(session.cursors[0], session.cursors[1]);
+
+      // range
+      if (session.range.starts !== session.range.ends) {
+        literals.view.editor.setSelection(
+          {
+            line: session.range.starts[0],
+            ch: session.range.starts[1]
+          },
+          {
+            line: session.range.ends[0],
+            ch: session.range.ends[1]
+          }
+        );
+      }
+
+      // scroll
+      literals.view.editor.scrollTo(session.scrolls[0], session.scrolls[1]);
+    }
+    if (session.mode === 'code') {
+      // cursor
+      aceSelection.moveCursorBy(session.cursors[0], session.cursors[1])
+
+      // range
+      if (session.range.starts !== session.range.ends) {
+        aceSelection.setSelectionRange(
+          new ace.Range(
+            session.range.starts[0], session.range.starts[1],
+            session.range.ends[0], session.range.ends[1]
+          )
+        );
+      }
+
+      // scroll
+      aceEditSession.setScrollLeft(session.scrolls[0]);
+      aceEditSession.setScrollTop(session.scrolls[1]);
+    }
+
+    // focus
+    literals.view.editor.focus();
   };
 
   // deinit session
@@ -291,11 +344,42 @@
     if (!literals.stat.session) {
       return;
     }
+    var session = literals.stat.session;
 
     // save content
-    literals.stat.session.content = literals.view.editor.getValue();
+    session.content = literals.view.editor.getValue();
 
-    // TODO: save other state
+    // save status
+    if (session.mode === 'text') {
+      // cursor
+      var cursor = literals.view.editor.getCursor(true);
+      session.cursors = [cursor.line, cursor.ch];
+
+      // range
+      var cursorEnd = literals.view.editor.getCursor(false);
+      session.range.starts = [cursor.line, cursor.ch];
+      session.range.ends = [cursorEnd.line, cursorEnd.ch];
+
+      // scroll
+      var scrollInfo = literals.view.editor.getScrollInfo();
+      session.scrolls = [scrollInfo.left, scrollInfo.top];
+    }
+    if (session.mode === 'code') {
+      // cursor
+      var cursorPosition = literals.view.editor.getCursorPosition();
+      session.cursors = [cursorPosition.row, cursorPosition.column];
+
+      // range
+      var selectionRange = literals.view.editor.getSelectionRange();
+      session.range.starts = [selectionRange.start.row, selectionRange.start.column];
+      session.range.ends = [selectionRange.end.row, selectionRange.end.column];
+
+      // scroll
+      session.scrolls = [
+        literals.view.editor.getSession().getScrollLeft(),
+        literals.view.editor.getSession().getScrollTop()
+      ];
+    }
 
     // clear editor
     literals.view.editor = null;
