@@ -29,7 +29,6 @@
   literals.config.global = {
     useTabChar: false,
     tabSize: 4,
-    spaceUnits: 2,
     closeBrackets: false,
     showLineNumbers: true,
     styleActiveLine: true,
@@ -38,7 +37,7 @@
     fontSize: 12,
     lineHeight: 1.25,
     keyBinding: null,
-    theme: 'tomorrow'
+    theme: 'xcode'
   };
 
   // .txt config
@@ -84,6 +83,10 @@
   // .js config
   literals.config.js = flagrate.extendObject({}, literals.config.global);
   literals.config.js.mode = 'javascript';
+
+  // .cs config
+  literals.config.cs = flagrate.extendObject({}, literals.config.global);
+  literals.config.cs.mode = 'csharp';
 
   // .ts config
   literals.config.ts = flagrate.extendObject({}, literals.config.global);
@@ -232,30 +235,55 @@
   // init session
   literals.f.initSession = function () {
     var session = literals.stat.session;
+    var config = session.config;
 
     // create editor
     if (session.mode === 'text') {
-      literals.view.editor = CodeMirror(literals.view.editorContainer);
+      literals.view.editor = CodeMirror(literals.view.editorContainer, {
+        value: session.content
+      });
     }
     if (session.mode === 'code') {
-      var aceElement = flagrate.createElement().insertTo(literals.view.editorContainer);
+      var aceElement = flagrate.createElement()
+        .insertText(session.content)
+        .insertTo(literals.view.editorContainer);
       literals.view.editor = ace.edit(aceElement);
     }
 
     // config
-    if (session.config.theme) {
-      if (session.mode === 'code') {
-        literals.view.editor.setTheme('ace/theme/' + session.config.theme);
-      }
+    if (session.mode === 'text') {
+      literals.view.editor.setOption('tabSize', config.tabSize);
+      literals.view.editor.setOption('indentWithTabs', config.useTabChar);
+      literals.view.editor.setOption('lineWrapping', config.wordWrap);
+      literals.view.editor.setOption('lineNumbers', config.showLineNumbers);
     }
-    if (session.config.mode) {
-      if (session.mode === 'code') {
-        literals.view.editor.getSession().setMode('ace/mode/' + session.config.mode);
+    if (session.mode === 'code') {
+      var aceEditSession = literals.view.editor.getSession();
+
+      if (config.theme) {
+        literals.view.editor.setTheme('ace/theme/' + config.theme);
       }
+      if (config.mode) {
+        aceEditSession.setMode('ace/mode/' + config.mode);
+      }
+      if (config.keyBinding !== null) {
+        literals.view.editor.setKeyboardHandler('ace/keyboard/' + config.keyBinding);
+      }
+
+      aceEditSession.setTabSize(config.tabSize);
+      aceEditSession.setUseSoftTabs(config.useTabChar === false);
+      aceEditSession.setUseWrapMode(config.wordWrap);
+
+      literals.view.editor.renderer.setShowGutter(config.showLineNumbers);
+
+      literals.view.editor.setHighlightActiveLine(config.styleActiveLine);
+      literals.view.editor.setShowInvisibles(config.showInvisibles);
+      literals.view.editor.setShowPrintMargin(false);
+      literals.view.editor.setBehavioursEnabled(config.closeBrackets);
     }
 
     // set value (content)
-    literals.view.editor.setValue(session.content);
+    //literals.view.editor.setValue();
   };
 
   // deinit session
