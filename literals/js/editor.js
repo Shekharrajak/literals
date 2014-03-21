@@ -142,6 +142,43 @@
 
     // TODO:
     literals.view.statusBar.insert('<ul><li>test</li><li>test</li><li>test</li></ul>');
+
+    // keyboard shortcuts
+    window.addEventListener('keydown', literals.f.onKeydownHandler, true);
+  };
+
+  // on keydown handler
+  literals.f.onKeydownHandler = function (e) {
+    if (!e.ctrlKey) {
+      return;
+    }
+
+    // ctrl + tab
+    if (e.ctrlKey && e.keyCode === 9) {
+      var nextSessionIndex = literals.sessions.indexOf(literals.stat.session) + 1;
+      if (nextSessionIndex >= literals.sessions.length) {
+        literals.f.selectSession(literals.sessions[0]);
+      } else {
+        literals.f.selectSession(literals.sessions[nextSessionIndex]);
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    // ctrl + num0
+    if (e.ctrlKey && (e.keyCode === 48)) {
+      literals.f.selectSession(literals.sessions[literals.sessions.length - 1]);
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    // ctrl + num1 ~ num9
+    if (e.ctrlKey && (e.keyCode >= 49 && e.keyCode <= 57)) {
+      literals.f.selectSession(literals.sessions[e.keyCode - 49]);
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
   };
 
   // create session
@@ -221,6 +258,10 @@
 
   // select session
   literals.f.selectSession = function (session) {
+    if (!session || literals.stat.session === session) {
+      return session;
+    }
+
     literals.f.deinitSession();
 
     literals.stat.session = session;
